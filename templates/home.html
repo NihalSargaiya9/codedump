@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACE in Action</title>
+<style type="text/css" media="screen">
+  body{
+    background: #eaeaea;
+    margin: 0px;
+  }
+  .header-site
+  {
+    width: 100%;
+    background: #111;
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+  }
+  .logo{
+    margin: 0;
+  width: max-content;
+  padding-left: 20px;
+  color: white;
+  align-self: center;
+  }
+  .header-site button
+  {
+    float: right;
+    box-shadow: none;
+    background: #eaeaea;
+    width: 100px;
+    border: none;
+    margin: 10px;
+    padding: 7px;
+    border-radius: 3px;
+    color: #3c3737;
+    font-weight: 900;
+    letter-spacing: 3px;
+  }
+  .ace_gutter,.ace_scroller
+  {
+    padding-top: 10px;
+  }
+    #editor {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 50%;
+    }
+    .container
+    {
+    }
+    #output
+    {
+      word-break: break-all;
+      position: absolute;
+      right: 0;
+      width: 48%;
+      padding: 12px;
+      height: 90vh;
+      bottom: 0px;
+    }
+    @media(max-width:768px){
+      #editor {
+          height: 46%;
+          width: 100%;
+      }
+      .container
+      {
+      }
+      #output
+      {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        width: 92%;
+        height: 43%;
+        padding: 12px;
+      }
+    }
+    .lds-roller {
+      display: inline-block;
+    position: relative;
+    width: 64px;
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    height: 64px;
+    left: 50%;
+    top: 50%;
+    margin-left: -32px;
+    margin-top: -32px;
+}
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 32px 32px;
+}
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #dfc;
+  margin: -3px 0 0 -3px;
+}
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 50px;
+  left: 50px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 54px;
+  left: 45px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 57px;
+  left: 39px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 58px;
+  left: 32px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 57px;
+  left: 25px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 54px;
+  left: 19px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 50px;
+  left: 14px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 45px;
+  left: 10px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loader{
+  width: 100%;
+  display: none;
+  height: 100vh;
+  background: #000000d1;
+  position: fixed;
+  z-index: 100000000000;
+}
+</style>
+</head>
+<body>
+  <div class="loader">
+    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+<div class="header-site">
+  <h2 class=logo>CODERUST</h2>
+  <button type="button" id=run name="button">RUN</button>
+</div>
+<div class="container">
+
+<div id="editor">//dump your code here</div>
+<div id="output">
+  {% for item in res %}
+  <li>{{item}}</li>
+    {% endfor %}
+</div>
+</div>
+<script src={{ url_for('static', filename='ace.js') }} type="text/javascript" charset="utf-8"></script>
+<script>
+  var language="c_cpp";
+    document.getElementById('editor').style.fontSize='18px';
+
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/"+language);
+
+</script>
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+ integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+ crossorigin="anonymous"></script>
+<script>
+$("#run").on('click',function () {
+  var code=editor.getValue();
+  console.log(code);
+  $(".loader").css("display","block");
+  json={
+    'code':code
+  }
+  $.ajax({
+    url:'/compile',
+    method:'POST',
+    data:json,
+    success:function (res) {
+      $("#output").html(res)
+      console.log(res);
+      $(".loader").css("display","none");
+    }
+
+  });
+});
+</script>
+</body>
+</html>
