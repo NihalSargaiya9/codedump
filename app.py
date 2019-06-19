@@ -41,9 +41,10 @@ def compile():
 def hello():
 	if "id" not in session :
 		session['id']=id.hex
-	print(request.remote_addr)
+	xyz=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)   
+	print(xyz)
 	print(session)
 	return render_template('/home.html')
 
-if (__name__ == "__main__"):
-	app.run(port = 5000,debug=True)
+# if (__name__ == "__main__"):
+# 	app.run(host='192.168.43.68',port = 5000,debug=True)
