@@ -45,8 +45,7 @@ def compile():
 	process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 	return res
 
-@app.route("/")
-def hello():
+def generateId():
 	shash = hashlib.md5(id_generator().encode()).hexdigest()
 	xyz=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)   
 
@@ -56,9 +55,14 @@ def hello():
 	finalId = str(finalId) + str(xyz)+str(idhe)
 
 	finalId = str(hashlib.md5(finalId.encode()).hexdigest())
+	return finalId
+
+@app.route("/")
+def hello():
+
 
 	if "id" not in session :
-		session['id']=finalId
+		session['id']=generateId()
 	print(finalId)
 	print(session)
 	return render_template('/home.html')
