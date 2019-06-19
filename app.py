@@ -52,10 +52,10 @@ def hello():
 
 	idhe = id.hex
 
-	finalId = hashlib.md5((str(shash)+str(random.randrange(1000000, 5000000))).encode())
+	finalId = hashlib.md5((str(shash)+str(random.randrange(1000000, 5000000))).encode()).hexdigest()
 	finalId = str(finalId) + str(xyz)+str(idhe)
 
-	finalId = str(hashlib.md5(finalId.encode()))
+	finalId = str(hashlib.md5(finalId.encode()).hexdigest())
 
 	if "id" not in session :
 		session['id']=finalId
