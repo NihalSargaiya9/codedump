@@ -2,6 +2,7 @@ from flask import Flask , render_template,request,session
 import subprocess
 import sys
 import uuid
+import random
 import time
 
 app = Flask(__name__)
@@ -41,6 +42,8 @@ def compile():
 def hello():
 	if "id" not in session :
 		session['id']=id.hex
+	print(hex(uuid.getnode()))
+	print(random.randrange(1000000, 5000000))
 	xyz=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)   
 	print(xyz)
 	print(session)
