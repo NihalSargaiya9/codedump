@@ -63,7 +63,6 @@ def hello():
 
 	if "id" not in session :
 		session['id']=generateId()
-	print(finalId)
 	print(session)
 	return render_template('/home.html')
 
