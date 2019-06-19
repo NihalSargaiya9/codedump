@@ -4,10 +4,17 @@ import sys
 import uuid
 import random
 import time
+import string
+import hashlib 
+
 
 app = Flask(__name__)
 id = uuid.uuid1()
-app.secret_key = "NIHALSARGAIYA98"
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+	return ''.join(random.choice(chars) for _ in range(size))
+
+app.secret_key = "jsd@wdNl}os[k!d!.{"
 @app.route("/compile",methods=["POST"])
 def compile():
 	f = open(session["id"]+".cpp","w")
@@ -40,12 +47,19 @@ def compile():
 
 @app.route("/")
 def hello():
-	if "id" not in session :
-		session['id']=id.hex
-	print(hex(uuid.getnode()))
-	print(random.randrange(1000000, 5000000))
+	shash = hashlib.md5(id_generator().encode()).hexdigest()
+	print(shash)
 	xyz=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)   
-	print(xyz)
+
+	idhe = id.hex
+
+	finalId = hashlib.md5((str(shash)+str(random.randrange(1000000, 5000000))).encode())
+	finalId = str(finalId) + str(xyz)+str(idhe)
+
+	finalId = str(hashlib.md5(finalId.encode()))
+
+	if "id" not in session :
+		session['id']=finalId
 	print(session)
 	return render_template('/home.html')
 
