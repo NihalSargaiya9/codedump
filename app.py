@@ -48,7 +48,6 @@ def compile():
 @app.route("/")
 def hello():
 	shash = hashlib.md5(id_generator().encode()).hexdigest()
-	print(shash)
 	xyz=request.environ.get('HTTP_X_REAL_IP', request.remote_addr)   
 
 	idhe = id.hex
@@ -60,6 +59,7 @@ def hello():
 
 	if "id" not in session :
 		session['id']=finalId
+	print(finalId)
 	print(session)
 	return render_template('/home.html')
 
