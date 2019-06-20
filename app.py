@@ -28,18 +28,26 @@ def compile():
 	f.close()
 	print(str(res))
 	if(res==""):
-		command="./"+session["id"]+".out > "+session["id"]+".txt"
+		command="timeout 1s ./"+session["id"]+".out  -x 'status' > "+session["id"]+".txt ; echo $? > "+session["id"]+".t.txt"
 		process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
 		time.sleep(1)
 	else:
 		tempo=str(session["id"]+".cpp:")
 		res = str(res).replace(tempo,"")
 		return res
-	f = open(session["id"]+".txt", 'r')
-	res=f.read()
-	res=res.replace("\n","<br/>")
+	time.sleep(1)
+	timeOut = open(session["id"]+".t.txt", 'r')
+	dataTimeOut= str(timeOut.read()).strip()
+	if dataTimeOut!="124":
+		timeOut.close()
+		f = open(session["id"]+".txt", 'r')
+		res=f.read()
+		res=res.replace("\n","<br/>")
+		print(res)
+		f.close()
+	else:
+		res = "Time limit exceeded"
 	print(res)
-	f.close()
 	time.sleep(2)
 	command="rm "+session["id"]+".*"
 	process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
